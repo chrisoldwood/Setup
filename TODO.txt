@@ -1,1 +1,1 @@
-- Recursive folder creation.
+- Uninstall support.
