@@ -27,6 +27,7 @@
 #define IDC_EXISTING                    1095
 #define IDC_NEW_GROUP                   1096
 #define IDC_OLD_GROUP                   1097
+#define IDC_ALL_USERS                   1100
 #define IDD_MAIN                        5000
 #define IDD_ABOUT                       5001
 #define IDD_PROGRESS                    5007
@@ -39,7 +40,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         163
-#define _APS_NEXT_CONTROL_VALUE         1098
+#define _APS_NEXT_CONTROL_VALUE         1101
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
