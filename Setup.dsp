@@ -165,5 +165,9 @@ SOURCE=.\App.ico
 SOURCE=.\App.rcv
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\TODO.txt
+# End Source File
 # End Target
 # End Project
