@@ -33,6 +33,7 @@ protected:
 	//
 	CEditBox	m_ebAppFolder;
 	CCheckBox	m_ckProgIcon;
+	CCheckBox	m_ckAllUsers;
 	CRadioBtn	m_rbNewGroup;
 	CEditBox	m_ebNewGroup;
 	CRadioBtn	m_rbOldGroup;
@@ -46,11 +47,18 @@ protected:
 
 	void OnBrowse();
 	void OnProgIcon();
+	void OnAllUsers();
 	void OnNewGroup();
 	void OnOldGroup();
 	void OnInstall();
 	void OnClose();
 	void OnAbout();
+
+	//
+	// Internal methods.
+	//
+	int  LoadList(const char* pszItem, CStrArray& astrList);
+	void CopyFile(const CPath& strSrcFile, const CPath& strDstFile);
 };
 
 /******************************************************************************
