@@ -203,7 +203,7 @@ void CAppDlg::OnAllUsers()
 
 	// Warn user about required privilages.
 	if (bAllUsers && App.m_bWinNT)
-		AlertMsg("You must have Administrator rights to install for all users.");
+		NotifyMsg("Please ensure you have Administrator rights before installing for all users.");
 }
 
 /******************************************************************************
