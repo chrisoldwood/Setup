@@ -175,6 +175,10 @@ SOURCE=.\App.rcv
 # End Group
 # Begin Source File
 
+SOURCE=.\Example.ini
+# End Source File
+# Begin Source File
+
 SOURCE=.\ReadMe.txt
 # End Source File
 # Begin Source File
