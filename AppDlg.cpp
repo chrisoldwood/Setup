@@ -293,19 +293,44 @@ void CAppDlg::OnInstall()
 
 	try
 	{
+		// Template shorthands.
+		typedef TMap<CString, CString> CStrStrMap;
+
 		CString strErr;
 
 		// Get the source and destination folders.
 		CPath strSetupDir   = CPath::ApplicationDir();
 		CPath strInstallDir = m_ebAppFolder.Text();
 		
-		CStrArray astrFiles;
+		CStrArray  astrFileList;
+		CStrArray  astrFiles;
+		CStrStrMap oNameMap;
+		CStrStrMap oDescMap;
 
 		// Load the file list.
-		if (LoadList("File", astrFiles) > 0)
+		if (LoadList("File", astrFileList) > 0)
 		{
+			// Parse file list entries.
+			for (int i = 0; i < astrFileList.Size(); ++i)
+			{
+				CStrArray astrFields;
+				CString   strFile, strName, strDesc;
+
+				// Split into File + Name + Description.
+				int nFields = CStrTok::Split(astrFileList[i], ',', astrFields);
+
+				if (nFields >= 1)	strFile = astrFields[0];
+				if (nFields >= 2)	strName = astrFields[1];
+				if (nFields >= 3)	strDesc = astrFields[2];
+
+				// Add to collections.
+				astrFiles.Add(strFile);
+				oNameMap.Add(strFile, strName);
+				oDescMap.Add(strFile, strDesc);
+			}
+
 			// Verify the file list.
-			for (int i = 0; i < astrFiles.Size(); ++i)
+			for (i = 0; i < astrFiles.Size(); ++i)
 			{
 				CString strFileName = astrFiles[i];
 				CPath   strFilePath = CPath(strSetupDir, strFileName);
@@ -380,14 +405,22 @@ void CAppDlg::OnInstall()
 				// Create all Shortcuts.
 				for (int i = 0; i < astrShortcuts.Size(); ++i)
 				{
-					// Substitute ".LNK" for the shortcut extension.
-					CPath   strFile   = astrShortcuts[i];
-					CString strName   = strFile.FileTitle() + ".lnk";
-					CPath   strLink   = CPath(strIconsDir,   strName);
-					CPath   strTarget = CPath(strInstallDir, strFile);
+					CPath   strFile = astrShortcuts[i];
+					CString strName = strFile.FileTitle();
+					CString strDesc;
+
+					// Get the shortcut name and description.
+					oNameMap.Find(strFile, strName);
+					oDescMap.Find(strFile, strDesc);
+
+					// Append shortcut extension.
+					strName += ".lnk";
+
+					CPath strLink   = CPath(strIconsDir,   strName);
+					CPath strTarget = CPath(strInstallDir, strFile);
 
 					// Create it...
-					if (!CFile::CreateShortcut(strLink, strTarget))
+					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
 						strErr.Format("Failed to create Programs shortcut: %s\n\n%s", strLink, App.FormatError());
 
@@ -418,14 +451,22 @@ void CAppDlg::OnInstall()
 				// Create all Desktop icons.
 				for (int i = 0; i < astrDeskIcons.Size(); ++i)
 				{
-					// Substitute ".LNK" for the shortcut extension.
-					CPath   strFile   = astrDeskIcons[i];
-					CString strName   = strFile.FileTitle() + ".lnk";
-					CPath   strLink   = CPath(strDesktop,    strName);
-					CPath   strTarget = CPath(strInstallDir, strFile);
+					CPath   strFile = astrDeskIcons[i];
+					CString strName = strFile.FileTitle();
+					CString strDesc;
+
+					// Get the shortcut name and description.
+					oNameMap.Find(strFile, strName);
+					oDescMap.Find(strFile, strDesc);
+
+					// Append shortcut extension.
+					strName += ".lnk";
+
+					CPath strLink   = CPath(strDesktop,    strName);
+					CPath strTarget = CPath(strInstallDir, strFile);
 
 					// Create it...
-					if (!CFile::CreateShortcut(strLink, strTarget))
+					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
 						strErr.Format("Failed to create Desktop shortcut: %s\n\n%s", strLink, App.FormatError());
 
