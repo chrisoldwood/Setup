@@ -1,3 +1,1 @@
 - Uninstall support.
-
-- Support link name and description fields.
