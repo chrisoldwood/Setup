@@ -183,6 +183,10 @@ SOURCE=.\ReadMe.txt
 # End Source File
 # Begin Source File
 
+SOURCE=.\RelNotes.txt
+# End Source File
+# Begin Source File
+
 SOURCE=.\Setup.ini
 # End Source File
 # Begin Source File
