@@ -4,6 +4,7 @@ Version 1.1
 - Added a GUI based tool (MkSetup) for generating the setup.ini file.
 - Replaced "Install Conflict" message box with a better dialog.
 - Added support for controlling the handling of subsequent install conflicts.
+- Added support for giving the shortcut its own name and description.
 
 
 Version 1.0
