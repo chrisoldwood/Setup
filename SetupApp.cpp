@@ -48,6 +48,7 @@ const char* CSetupApp::INI_FILE_VER = "1.0";
 
 CSetupApp::CSetupApp()
 	: CApp(m_AppWnd, m_AppCmds)
+	, m_bWinNT(false)
 {
 
 }
@@ -86,6 +87,16 @@ bool CSetupApp::OnOpen()
 	// Set the initial app title.
 	m_strTitle = "Setup";
 
+	OSVERSIONINFO oInfo = { 0 };
+
+	// Get Windows version info.
+	oInfo.dwOSVersionInfoSize = sizeof(oInfo);
+
+	::GetVersionEx(&oInfo);
+
+	// Is Windows NT line?
+	m_bWinNT = (oInfo.dwPlatformId == VER_PLATFORM_WIN32_NT);
+
 	// Read the .ini file version.
 	CString strVer = m_oIniFile.ReadString("Version", "Version", "");
 
@@ -103,8 +114,9 @@ bool CSetupApp::OnOpen()
 		return false;
 	}
 
-	// Load title from .ini file.
-	m_strTitle = m_oIniFile.ReadString("Main", "Title", "Setup");
+	// Get title and product name.
+	m_strTitle   = m_oIniFile.ReadString("Main", "Title",   "Setup"  );
+	m_strProduct = m_oIniFile.ReadString("Main", "Product", "Product");
 
 	// Create the main window.
 	if (!m_AppWnd.Create())

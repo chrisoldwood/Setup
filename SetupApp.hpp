@@ -34,6 +34,8 @@ public:
 	CAppWnd		m_AppWnd;		// Main window.
 	CAppCmds	m_AppCmds;		// Command handler.
 	CIniFile	m_oIniFile;		// Config File.
+	bool		m_bWinNT;		// Is Windows NT line?
+	CString		m_strProduct;	// Product name.
 
 	//
 	// Constants.
