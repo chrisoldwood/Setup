@@ -12,6 +12,7 @@
 #include "AboutDlg.hpp"
 #include <shlobj.h>
 #include "ProgressDlg.hpp"
+#include "ConflictDlg.hpp"
 
 #ifndef CSIDL_PROGRAM_FILES
 // NB: Only available with IE 5.x and later.
@@ -514,6 +515,14 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 	// Destination file exists?
 	if (strDstFile.Exists())
 	{
+		// Overwrite flags.
+		static bool bDefYesAll = false;
+		static bool bDefNoAll  = false;
+
+		// Default is never overwrite?
+		if (bDefNoAll)
+			return;
+
 		struct _stat oSrcInfo, oDstInfo;
 
 		// Get source file properties.
@@ -537,27 +546,34 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 		  && (oSrcInfo.st_mtime == oDstInfo.st_mtime) )
 			return;
 
-		// Query user for action.
-		int nResult = QueryMsg("Installation file conflict.\nDo you want to replace the following file:\n\n"
-							   "   %s\n\n   %s - %u Bytes\n\n"
-							   "With this one from the install set:\n\n"
-							   "   %s\n\n   %s - %u Bytes\n\n"
-							   "* Click YES to replace the existing file.\n"
-							   "* Click NO to leave the existing file.\n"
-							   "* Click CANCEL to abort the installation.\n",
-								strSrcFile, CStrCvt::FormatDateTime(oSrcInfo.st_mtime), oSrcInfo.st_size,
-								strDstFile, CStrCvt::FormatDateTime(oDstInfo.st_mtime), oDstInfo.st_size);
-
-		// Ignore file?
-		if (nResult == IDNO)
-			return;
-
-		// Abort install?
-		if (nResult == IDCANCEL)
+		// Default is to query overwrites?
+		if (!bDefYesAll)
 		{
-			strErr = "Installation aborted";
+			CConflictDlg oQueryDlg;
 
-			throw strErr;
+			oQueryDlg.m_strFileName1.Format("%s", strDstFile);
+			oQueryDlg.m_strFileInfo1.Format("%s - %u Bytes", CStrCvt::FormatDateTime(oDstInfo.st_mtime), oDstInfo.st_size);
+			oQueryDlg.m_strFileName2.Format("%s", strSrcFile);
+			oQueryDlg.m_strFileInfo2.Format("%s - %u Bytes", CStrCvt::FormatDateTime(oSrcInfo.st_mtime), oSrcInfo.st_size);
+
+			// Query user for action.
+			int nResult = oQueryDlg.RunModal(App.m_AppWnd);
+
+			// Default answer returned?
+			if (nResult == IDYESALL)	bDefYesAll = true;
+			if (nResult == IDNOALL)		bDefNoAll  = true;
+
+			// Ignore file?
+			if ((nResult == IDNO) || (nResult == IDNOALL))
+				return;
+
+			// Abort install?
+			if (nResult == IDCANCEL)
+			{
+				strErr = "Installation aborted";
+
+				throw strErr;
+			}
 		}
 	}
 
