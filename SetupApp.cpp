@@ -28,11 +28,13 @@ CSetupApp App;
 */
 
 #ifdef _DEBUG
-const char* CSetupApp::VERSION      = "v1.0 [Debug]";
+const char* CSetupApp::VERSION      = "v1.1 [Debug]";
 #else
-const char* CSetupApp::VERSION      = "v1.0";
+const char* CSetupApp::VERSION      = "v1.1";
 #endif
-const char* CSetupApp::INI_FILE_VER = "1.0";
+
+const char* CSetupApp::OLD_FILE_VER = "1.0";
+const char* CSetupApp::CUR_FILE_VER = "1.1";
 
 /******************************************************************************
 ** Method:		Constructor
@@ -103,20 +105,40 @@ bool CSetupApp::OnOpen()
 	// .ini file missing?
 	if (strVer == "")
 	{
-		FatalMsg("Setup config file 'Setup.ini' is missing or corrupt.");
+		FatalMsg("Script file 'Setup.ini' is missing or corrupt.");
 		return false;
 	}
 
-	// .ini file missing?
-	if (strVer != INI_FILE_VER)
+	// Old .ini file version?
+	if (strVer == OLD_FILE_VER)
 	{
-		FatalMsg("Setup config file 'Setup.ini' is not compatible with this version.");
+		FatalMsg("Script file 'Setup.ini' is for an older version of Setup.");
 		return false;
 	}
 
-	// Get title and product name.
-	m_strTitle   = m_oIniFile.ReadString("Main", "Title",   "Setup"  );
-	m_strProduct = m_oIniFile.ReadString("Main", "Product", "Product");
+	// Newer .ini file version?
+	if (strVer != CUR_FILE_VER)
+	{
+		FatalMsg("Script file 'Setup.ini' is not compatible with this version of Setup.");
+		return false;
+	}
+
+	// Get title, product and author names.
+	m_strTitle   = m_oIniFile.ReadString("Main", "Title",   "");
+	m_strProduct = m_oIniFile.ReadString("Main", "Product", "");
+	m_strAuthor  = m_oIniFile.ReadString("Main", "Author",  "");
+
+	if (m_strTitle == "")
+	{
+		FatalMsg("Script file 'Setup.ini' is missing the window title.");
+		return false;
+	}
+
+	if (m_strProduct == "")
+	{
+		FatalMsg("Script file 'Setup.ini' is missing the product name.");
+		return false;
+	}
 
 	// Create the main window.
 	if (!m_AppWnd.Create())

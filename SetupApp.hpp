@@ -36,6 +36,7 @@ public:
 	CIniFile	m_oIniFile;		// Config File.
 	bool		m_bWinNT;		// Is Windows NT line?
 	CString		m_strProduct;	// Product name.
+	CString		m_strAuthor;	// Product author.
 
 	//
 	// Constants.
@@ -52,7 +53,8 @@ protected:
 	//
 	// Constants.
 	//
-	static const char* INI_FILE_VER;
+	static const char* OLD_FILE_VER;
+	static const char* CUR_FILE_VER;
 };
 
 /******************************************************************************
