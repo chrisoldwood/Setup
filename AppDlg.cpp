@@ -321,7 +321,7 @@ void CAppDlg::OnInstall()
 		// Create the installation folder, if required.
 		if (!strInstallDir.Exists())
 		{
-			if (!CFile::CreateFolder(strInstallDir))
+			if (!CFile::CreateFolder(strInstallDir, true))
 			{
 				strErr.Format("Failed to create folder: %s.\n\n%s", strInstallDir, App.FormatError());
 
@@ -363,7 +363,7 @@ void CAppDlg::OnInstall()
 
 			if (!strIconsDir.Exists())
 			{
-				if (!CFile::CreateFolder(strIconsDir))
+				if (!CFile::CreateFolder(strIconsDir, true))
 				{
 					strErr.Format("Failed to create folder: %s.\n\n%s", strIconsDir, App.FormatError());
 
