@@ -106,6 +106,10 @@ SOURCE=.\AppWnd.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ConflictDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ProgressDlg.cpp
 # End Source File
 # Begin Source File
@@ -139,6 +143,10 @@ SOURCE=.\AppHeaders.hpp
 # Begin Source File
 
 SOURCE=.\AppWnd.hpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ConflictDlg.hpp
 # End Source File
 # Begin Source File
 
