@@ -1,5 +1,3 @@
 - Uninstall support.
 
-- Make script tool.
-
 - Support link name and description fields.
