@@ -10,7 +10,6 @@
 
 #include "AppHeaders.hpp"
 #include "ConflictDlg.hpp"
-#include "HelpTopics.h"
 
 #ifdef _DEBUG
 // For memory leak detection.
@@ -98,22 +97,4 @@ void CConflictDlg::OnNo()
 void CConflictDlg::OnNoAll()
 {
 	EndDialog(IDNOALL);
-}
-
-/******************************************************************************
-** Method:		OnHelp()
-**
-** Description:	Help requested for the dialog.
-**
-** Parameters:	See HELPINFO.
-**
-** Returns:		Nothing.
-**
-*******************************************************************************
-*/
-
-void CConflictDlg::OnHelp(HELPINFO& /*oInfo*/)
-{
-	// Show the dialogs help topic.
-	App.m_oHelpFile.Topic(IDH_CONFLICTDLG);
 }

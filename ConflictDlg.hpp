@@ -48,7 +48,6 @@ protected:
 	// Message handlers.
 	//
 	virtual void OnInitDialog();
-	virtual void OnHelp(HELPINFO& oInfo);
 
 	void OnYes();
 	void OnYesAll();
