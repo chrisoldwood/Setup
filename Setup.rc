@@ -144,6 +144,28 @@ BEGIN
                     40,20,150,10
 END
 
+IDD_CONFLICT DIALOG DISCARDABLE  0, 0, 292, 130
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Install Conflict"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_APPICON,IDC_STATIC,10,10,20,20
+    LTEXT           "Installation file conflict.",IDC_STATIC,50,10,225,8
+    LTEXT           "Do you want to replace the existing file:",IDC_STATIC,
+                    50,20,225,8
+    LTEXT           "%s",IDC_FILENAME_1,50,35,225,8
+    LTEXT           "%s",IDC_FILEINFO_1,50,45,225,8
+    LTEXT           "With this one from the install set:",IDC_STATIC,50,60,
+                    225,8
+    LTEXT           "%s",IDC_FILENAME_2,50,75,225,8
+    LTEXT           "%s",IDC_FILEINFO_2,50,85,225,8
+    PUSHBUTTON      "&Yes",IDYES,10,105,50,14
+    PUSHBUTTON      "Yes &All",IDYESALL,60,105,50,14
+    PUSHBUTTON      "&No",IDNO,120,105,50,14
+    PUSHBUTTON      "No A&ll",IDNOALL,170,105,50,14
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,230,105,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -181,6 +203,14 @@ BEGIN
         RIGHTMARGIN, 195
         TOPMARGIN, 7
         BOTTOMMARGIN, 34
+    END
+
+    IDD_CONFLICT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
     END
 END
 #endif    // APSTUDIO_INVOKED

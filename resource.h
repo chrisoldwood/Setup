@@ -5,12 +5,12 @@
 #define IDR_APPICON                     2
 #define IDR_APPMENU                     3
 #define IDR_APPACCEL                    4
-#define IDR_APPTOOLBAR                  5
+#define IDYESALL                        8
+#define IDNOALL                         9
 #define ID_FILE_EXIT                    109
 #define ID_HELP_POPUP                   900
 #define ID_HELP_CONTENTS                901
 #define ID_HELP_ABOUT                   902
-#define IDC_GRID                        1060
 #define IDC_PROGRESS                    1080
 #define IDC_OPERATION                   1081
 #define IDC_WEBSITE                     1083
@@ -28,9 +28,14 @@
 #define IDC_NEW_GROUP                   1096
 #define IDC_OLD_GROUP                   1097
 #define IDC_ALL_USERS                   1100
+#define IDC_FILENAME_1                  1101
+#define IDC_FILEINFO_1                  1102
+#define IDC_FILENAME_2                  1103
+#define IDC_FILEINFO_2                  1104
 #define IDD_MAIN                        5000
 #define IDD_ABOUT                       5001
 #define IDD_PROGRESS                    5007
+#define IDD_CONFLICT                    5012
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
