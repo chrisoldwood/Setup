@@ -1,3 +1,5 @@
 - Uninstall support.
 
 - Fix conflict messsage (wrong way round).
+
+- Make script tool.
