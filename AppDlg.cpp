@@ -330,7 +330,7 @@ void CAppDlg::OnInstall()
 			}
 
 			// Verify the file list.
-			for (i = 0; i < astrFiles.Size(); ++i)
+			for (int i = 0; i < astrFiles.Size(); ++i)
 			{
 				CString strFileName = astrFiles[i];
 				CPath   strFilePath = CPath(strSetupDir, strFileName);
