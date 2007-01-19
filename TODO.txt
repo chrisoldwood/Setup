@@ -1,9 +1,16 @@
+This Release
+============
+
+
+Next Release
+=============
+
+- Use proper DateTime format for modified time on conflict dialog.
+
 - Uninstall support.
 
 - Add RegKey for installed path for use when upgrading
 
 - Support Path specifies for files, eg %System% %ProgFiles% etc.
-
-- Fix Example.ini file.
 
 - Fix use of SHGetFolderPath() in CPath (~NT 4.0)
