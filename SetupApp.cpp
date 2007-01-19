@@ -105,21 +105,22 @@ bool CSetupApp::OnOpen()
 	// .ini file missing?
 	if (strVer == "")
 	{
-		FatalMsg("Script file 'Setup.ini' is missing or corrupt.");
+		const char* pszMsg = "The Setup script file is missing or corrupt:-\n\n"
+							 "Script: %s";
+
+		FatalMsg(pszMsg, m_oIniFile.m_strPath);
 		return false;
 	}
 
-	// Old .ini file version?
-	if (strVer == OLD_FILE_VER)
-	{
-		FatalMsg("Script file 'Setup.ini' is for an older version of Setup.");
-		return false;
-	}
-
-	// Newer .ini file version?
+	// Different .ini file version?
 	if (strVer != CUR_FILE_VER)
 	{
-		FatalMsg("Script file 'Setup.ini' is not compatible with this version of Setup.");
+		const char* pszMsg = "The Setup script is for a different version of this installer:-\n\n"
+							 "Found:      '%s'\n"
+							 "Expected: '%s'\n\n"
+							 "Script: %s";
+
+		FatalMsg(pszMsg, strVer, CUR_FILE_VER, m_oIniFile.m_strPath);
 		return false;
 	}
 
@@ -130,13 +131,21 @@ bool CSetupApp::OnOpen()
 
 	if (m_strTitle == "")
 	{
-		FatalMsg("Script file 'Setup.ini' is missing the window title.");
+		const char* pszMsg = "The Setup script file is missing the window title:-\n\n"
+							 "Entry: [Main] Title=\n"
+							 "Script: %s\n";
+
+		FatalMsg(pszMsg, m_oIniFile.m_strPath);
 		return false;
 	}
 
 	if (m_strProduct == "")
 	{
-		FatalMsg("Script file 'Setup.ini' is missing the product name.");
+		const char* pszMsg = "The Setup script file is missing the product name:-\n\n"
+							 "Entry: [Main] Title=\n"
+							 "Script: %s\n";
+
+		FatalMsg(pszMsg, m_oIniFile.m_strPath);
 		return false;
 	}
 
