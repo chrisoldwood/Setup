@@ -11,6 +11,4 @@ Next Release
 
 - Add RegKey for installed path for use when upgrading
 
-- Support Path specifies for files, eg %System% %ProgFiles% etc.
-
 - Fix use of SHGetFolderPath() in CPath (~NT 4.0)
