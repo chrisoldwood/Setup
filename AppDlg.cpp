@@ -88,10 +88,10 @@ void CAppDlg::OnInitDialog()
 	CPath strProgsDir = CPath::SpecialDir(CSIDL_PROGRAM_FILES);
 
 	if (strProgsDir == "")
-		strProgsDir = CPath::WindowsDir().Drive() + "Program Files";
+		strProgsDir = CPath::WindowsDir().Root() / "Program Files";
 
 	// Initialise the controls.
-	m_ebAppFolder.Text(strProgsDir + strAppDir);
+	m_ebAppFolder.Text(strProgsDir / strAppDir);
 	m_ckProgIcon.Check(bProgIcon);
 	m_ckAllUsers.Check(bAllUsers);
 	m_rbNewGroup.Check(bNewGroup);
@@ -304,6 +304,7 @@ void CAppDlg::OnInstall()
 		
 		CStrArray  astrFileList;
 		CStrArray  astrFiles;
+		CStrStrMap oFolderMap;
 		CStrStrMap oNameMap;
 		CStrStrMap oDescMap;
 
@@ -314,17 +315,19 @@ void CAppDlg::OnInstall()
 			for (int i = 0; i < astrFileList.Size(); ++i)
 			{
 				CStrArray astrFields;
-				CString   strFile, strName, strDesc;
+				CString   strFile, strFolder, strName, strDesc;
 
-				// Split into File + Name + Description.
+				// Split into File + Folder + Name + Description.
 				int nFields = CStrTok::Split(astrFileList[i], ',', astrFields);
 
-				if (nFields >= 1)	strFile = astrFields[0];
-				if (nFields >= 2)	strName = astrFields[1];
-				if (nFields >= 3)	strDesc = astrFields[2];
+				if (nFields >= 1)	strFile   = astrFields[0];
+				if (nFields >= 2)	strFolder = astrFields[1];
+				if (nFields >= 3)	strName   = astrFields[2];
+				if (nFields >= 4)	strDesc   = astrFields[3];
 
 				// Add to collections.
 				astrFiles.Add(strFile);
+				oFolderMap.Add(strFile, ParseFolder(strFolder, strInstallDir));
 				oNameMap.Add(strFile, strName);
 				oDescMap.Add(strFile, strDesc);
 			}
@@ -335,12 +338,11 @@ void CAppDlg::OnInstall()
 				CString strFileName = astrFiles[i];
 				CPath   strFilePath = CPath(strSetupDir, strFileName);
 
-				if ( (strFileName == "") || (!strFilePath.Exists()) )
-				{
-					strErr = "Failed to verify the File List.\n\nThe File List contains invalid entries.";
+				if (strFileName == "")
+					throw CString::Fmt("Failed to verify the File List.\nFile entry [%d] is empty", i);
 
-					throw strErr;
-				}
+				if (!strFilePath.Exists())
+					throw CString::Fmt("Failed to verify the File List.\nThe following file is missing:-\n\n%s", strFilePath);
 			}
 		}
 
@@ -349,7 +351,7 @@ void CAppDlg::OnInstall()
 		{
 			if (!CFile::CreateFolder(strInstallDir, true))
 			{
-				strErr.Format("Failed to create folder: %s.\n\n%s", strInstallDir, App.FormatError());
+				strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strInstallDir, App.FormatError());
 
 				throw strErr;
 			}
@@ -363,8 +365,9 @@ void CAppDlg::OnInstall()
 		for (int i = 0; i < astrFiles.Size(); ++i)
 		{
 			CString strFile    = astrFiles[i];
-			CPath   strSrcFile = CPath(strSetupDir,   strFile);
-			CPath   strDstFile = CPath(strInstallDir, strFile);
+			CString strFolder  = oFolderMap.Find(strFile); 
+			CPath   strSrcFile = CPath(strSetupDir, strFile);
+			CPath   strDstFile = CPath(strFolder,   strFile);
 
 			Dlg.UpdateLabelAndMeter("Copying file: " + (CString)strFile, i);
 
@@ -391,7 +394,7 @@ void CAppDlg::OnInstall()
 			{
 				if (!CFile::CreateFolder(strIconsDir, true))
 				{
-					strErr.Format("Failed to create folder: %s.\n\n%s", strIconsDir, App.FormatError());
+					strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strIconsDir, App.FormatError());
 
 					throw strErr;
 				}
@@ -409,7 +412,7 @@ void CAppDlg::OnInstall()
 					CString strName = strFile.FileTitle();
 					CString strDesc;
 
-					// Get the shortcut name and description.
+					// Get the shortcut name and description, if set.
 					oNameMap.Find(strFile, strName);
 					oDescMap.Find(strFile, strDesc);
 
@@ -422,7 +425,7 @@ void CAppDlg::OnInstall()
 					// Create it...
 					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
-						strErr.Format("Failed to create Programs shortcut: %s\n\n%s", strLink, App.FormatError());
+						strErr.Format("Failed to create Programs shortcut:-\n\n%s\n\n%s", strLink, App.FormatError());
 
 						throw strErr;
 					}
@@ -468,7 +471,7 @@ void CAppDlg::OnInstall()
 					// Create it...
 					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
-						strErr.Format("Failed to create Desktop shortcut: %s\n\n%s", strLink, App.FormatError());
+						strErr.Format("Failed to create Desktop shortcut:-\n\n%s\n\n%s", strLink, App.FormatError());
 
 						throw strErr;
 					}
@@ -591,11 +594,13 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 		if (!bDefYesAll)
 		{
 			CConflictDlg oQueryDlg;
+			CDateTime    dtDstModTime = CDateTime::FromLocalTime(oDstInfo.st_mtime);
+			CDateTime    dtSrcModTime = CDateTime::FromLocalTime(oSrcInfo.st_mtime);
 
 			oQueryDlg.m_strFileName1.Format("%s", strDstFile);
-			oQueryDlg.m_strFileInfo1.Format("%s - %u Bytes", CStrCvt::FormatDateTime(oDstInfo.st_mtime), oDstInfo.st_size);
+			oQueryDlg.m_strFileInfo1.Format("%s - %u Bytes", dtDstModTime.ToString(), oDstInfo.st_size);
 			oQueryDlg.m_strFileName2.Format("%s", strSrcFile);
-			oQueryDlg.m_strFileInfo2.Format("%s - %u Bytes", CStrCvt::FormatDateTime(oSrcInfo.st_mtime), oSrcInfo.st_size);
+			oQueryDlg.m_strFileInfo2.Format("%s - %u Bytes", dtSrcModTime.ToString(), oSrcInfo.st_size);
 
 			// Query user for action.
 			int nResult = oQueryDlg.RunModal(App.m_AppWnd);
@@ -625,4 +630,45 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 
 		throw strErr;
 	}
+}
+
+/******************************************************************************
+** Method:		ParseFolder()
+**
+** Description:	Parse the folder name and substitute any %variables%. If the
+**				name is empty it defaults to %TargetDir%.
+**
+** Parameters:	strFolder		The folder to parse.
+**				strTargetDir	The %TargetDir% folder.
+**
+** Returns:		The parsed string.
+**
+*******************************************************************************
+*/
+
+CString CAppDlg::ParseFolder(const CString& strFolder, const CString& strTargetDir)
+{
+	// %TargetDir% is the default.
+	if (strFolder == "")
+		return strTargetDir;
+
+	CString str = strFolder;
+
+	// Do a crude search and replace on all possible matches.
+	if (str.Find('%') != -1)
+		str.Replace("%TargetDir%", strTargetDir);
+
+	if (str.Find('%') != -1)
+		str.Replace("%WinDir%", CPath::WindowsDir());
+
+	if (str.Find('%') != -1)
+		str.Replace("%SystemRoot%", CPath::WindowsDir());
+
+	if (str.Find('%') != -1)
+		str.Replace("%ProgramFiles%", CPath::SpecialDir(CSIDL_PROGRAM_FILES));
+
+	if (str.Find('%') != -1)
+		str.Replace("%Temp%", CPath::TempDir());
+
+	return str;
 }
