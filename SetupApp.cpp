@@ -22,19 +22,28 @@ CSetupApp App;
 
 /******************************************************************************
 **
+** Constants.
+**
+*******************************************************************************
+*/
+
+const char* FILE_VER_10  = "1.0";
+const char* FILE_VER_11  = "1.1";
+const char* FILE_VER_12  = "1.2";
+const char* CUR_FILE_VER = FILE_VER_12;
+
+/******************************************************************************
+**
 ** Class constants.
 **
 *******************************************************************************
 */
 
 #ifdef _DEBUG
-const char* CSetupApp::VERSION      = "v1.1 [Debug]";
+const char* CSetupApp::VERSION      = "v1.2 [Debug]";
 #else
-const char* CSetupApp::VERSION      = "v1.1";
+const char* CSetupApp::VERSION      = "v1.2";
 #endif
-
-const char* CSetupApp::OLD_FILE_VER = "1.0";
-const char* CSetupApp::CUR_FILE_VER = "1.1";
 
 /******************************************************************************
 ** Method:		Constructor

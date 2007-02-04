@@ -49,12 +49,6 @@ protected:
 	//
 	virtual	bool OnOpen();
 	virtual	bool OnClose();
-
-	//
-	// Constants.
-	//
-	static const char* OLD_FILE_VER;
-	static const char* CUR_FILE_VER;
 };
 
 /******************************************************************************
