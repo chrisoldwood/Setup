@@ -14,11 +14,6 @@
 #include "ProgressDlg.hpp"
 #include "ConflictDlg.hpp"
 
-#ifndef CSIDL_PROGRAM_FILES
-// NB: Only available with IE 5.x and later.
-#define	CSIDL_PROGRAM_FILES		0x0026
-#endif
-
 /******************************************************************************
 ** Method:		Default constructor.
 **
@@ -72,6 +67,7 @@ CAppDlg::CAppDlg()
 void CAppDlg::OnInitDialog()
 {
 	// Get the default installation settings.
+	CPath   strRootDir = App.m_oIniFile.ReadString("Main", "DefRoot",   "%ProgramFiles%");
 	CPath   strAppDir  = App.m_oIniFile.ReadString("Main", "DefFolder", ""   );
 	bool    bProgIcon  = App.m_oIniFile.ReadBool  ("Main", "ProgIcon",  false);
 	bool    bAllUsers  = App.m_oIniFile.ReadBool  ("Main", "AllUsers",  false);
@@ -83,15 +79,13 @@ void CAppDlg::OnInitDialog()
 	if (!App.m_bWinNT)
 		bAllUsers = true;
 
-	// Try and get the "Program Files" folder.
-	// NB: Only available with IE 5.x and later.
-	CPath strProgsDir = CPath::SpecialDir(CSIDL_PROGRAM_FILES);
+	// Format the default installation path.
+	CPath strDefDir = strRootDir / strAppDir;
 
-	if (strProgsDir == "")
-		strProgsDir = CPath::WindowsDir().Root() / "Program Files";
+	strDefDir.ExpandVars();
 
 	// Initialise the controls.
-	m_ebAppFolder.Text(strProgsDir / strAppDir);
+	m_ebAppFolder.Text(strDefDir);
 	m_ckProgIcon.Check(bProgIcon);
 	m_ckAllUsers.Check(bAllUsers);
 	m_rbNewGroup.Check(bNewGroup);
@@ -646,29 +640,20 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 *******************************************************************************
 */
 
-CString CAppDlg::ParseFolder(const CString& strFolder, const CString& strTargetDir)
+CPath CAppDlg::ParseFolder(const CPath& strFolder, const CPath& strTargetDir)
 {
 	// %TargetDir% is the default.
 	if (strFolder == "")
 		return strTargetDir;
 
-	CString str = strFolder;
+	CPath str = strFolder;
 
 	// Do a crude search and replace on all possible matches.
 	if (str.Find('%') != -1)
 		str.Replace("%TargetDir%", strTargetDir);
 
 	if (str.Find('%') != -1)
-		str.Replace("%WinDir%", CPath::WindowsDir());
-
-	if (str.Find('%') != -1)
-		str.Replace("%SystemRoot%", CPath::WindowsDir());
-
-	if (str.Find('%') != -1)
-		str.Replace("%ProgramFiles%", CPath::SpecialDir(CSIDL_PROGRAM_FILES));
-
-	if (str.Find('%') != -1)
-		str.Replace("%Temp%", CPath::TempDir());
+		str.ExpandVars();
 
 	return str;
 }

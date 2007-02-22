@@ -59,7 +59,7 @@ protected:
 	//
 	int  LoadList(const char* pszItem, CStrArray& astrList);
 	void CopyFile(const CPath& strSrcFile, const CPath& strDstFile);
-	CString ParseFolder(const CString& strFolder, const CString& strTargetDir);
+	CPath ParseFolder(const CPath& strFolder, const CPath& strTargetDir);
 };
 
 /******************************************************************************
