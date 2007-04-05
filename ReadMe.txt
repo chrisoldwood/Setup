@@ -21,6 +21,10 @@ Delete all the files from the archive.
 3: Manual
 ---------
 
+This is a very simple installer that creates an installation folder, copies the
+files into it and also optionally creates any shortcuts in the Start Menu and on
+the desktop.
+
 Setup.exe requires a script file called setup.ini, which must reside in the same
 folder as the executable and any files you are installing. An example one is
 provided, which has comments to tell you what to set. Alternatively, you can use
@@ -38,4 +42,4 @@ Web:   http://www.cix.co.uk/~gort
 
 Chris Oldwood 
 
-8th February 2007
+26th March 2007
