@@ -345,7 +345,7 @@ void CAppDlg::OnInstall()
 		{
 			if (!CFile::CreateFolder(strInstallDir, true))
 			{
-				strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strInstallDir, App.FormatError());
+				strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strInstallDir, CStrCvt::FormatError());
 
 				throw strErr;
 			}
@@ -388,7 +388,7 @@ void CAppDlg::OnInstall()
 			{
 				if (!CFile::CreateFolder(strIconsDir, true))
 				{
-					strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strIconsDir, App.FormatError());
+					strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strIconsDir, CStrCvt::FormatError());
 
 					throw strErr;
 				}
@@ -419,7 +419,7 @@ void CAppDlg::OnInstall()
 					// Create it...
 					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
-						strErr.Format("Failed to create Programs shortcut:-\n\n%s\n\n%s", strLink, App.FormatError());
+						strErr.Format("Failed to create Programs shortcut:-\n\n%s\n\n%s", strLink, CStrCvt::FormatError());
 
 						throw strErr;
 					}
@@ -465,7 +465,7 @@ void CAppDlg::OnInstall()
 					// Create it...
 					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
-						strErr.Format("Failed to create Desktop shortcut:-\n\n%s\n\n%s", strLink, App.FormatError());
+						strErr.Format("Failed to create Desktop shortcut:-\n\n%s\n\n%s", strLink, CStrCvt::FormatError());
 
 						throw strErr;
 					}
@@ -620,7 +620,7 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 	// Copy file.
 	if (!CFile::Copy(strSrcFile, strDstFile, true))
 	{
-		strErr.Format("Failed to copy file:\n\n%s to\n%s\n\n%s", strSrcFile, strDstFile, App.FormatError());
+		strErr.Format("Failed to copy file:\n\n%s to\n%s\n\n%s", strSrcFile, strDstFile, CStrCvt::FormatError());
 
 		throw strErr;
 	}
