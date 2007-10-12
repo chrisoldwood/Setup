@@ -24,12 +24,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories="../Lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="2"
@@ -102,7 +102,7 @@
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="1"
 				BufferSecurityCheck="TRUE"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="2"
@@ -160,6 +160,15 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{790BC113-52FB-4565-8968-79B8B011C520}"
+			Name="Core"/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{AED77F84-49CF-4B84-B319-2D07025ECA06}"
+			Name="Legacy"/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{9B0335B6-93BE-4604-8497-27431874D758}"
+			Name="Wcl"/>
 	</References>
 	<Files>
 		<Filter
@@ -182,9 +191,6 @@
 			</File>
 			<File
 				RelativePath="ProgressDlg.cpp">
-			</File>
-			<File
-				RelativePath="Setup.rc">
 			</File>
 			<File
 				RelativePath="SetupApp.cpp">
@@ -215,9 +221,6 @@
 				RelativePath="ProgressDlg.hpp">
 			</File>
 			<File
-				RelativePath="Resource.h">
-			</File>
-			<File
 				RelativePath="SetupApp.hpp">
 			</File>
 		</Filter>
@@ -229,6 +232,12 @@
 			</File>
 			<File
 				RelativePath="App.rcv">
+			</File>
+			<File
+				RelativePath="Resource.h">
+			</File>
+			<File
+				RelativePath="Setup.rc">
 			</File>
 		</Filter>
 		<File
