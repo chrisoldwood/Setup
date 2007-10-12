@@ -13,6 +13,8 @@
 #include <shlobj.h>
 #include "ProgressDlg.hpp"
 #include "ConflictDlg.hpp"
+#include <Legacy/TMap.hpp>
+#include <Legacy/FileFinder.hpp>
 
 /******************************************************************************
 ** Method:		Default constructor.
