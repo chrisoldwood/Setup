@@ -8,13 +8,19 @@
 *******************************************************************************
 */
 
-#include "AppHeaders.hpp"
+#include "Common.hpp"
+#include "AppDlg.hpp"
+#include "SetupApp.hpp"
 #include "AboutDlg.hpp"
 #include <shlobj.h>
 #include "ProgressDlg.hpp"
 #include "ConflictDlg.hpp"
 #include <Legacy/TMap.hpp>
 #include <Legacy/FileFinder.hpp>
+#include <WCL/StrTok.hpp>
+#include <WCL/File.hpp>
+#include <WCL/StrCvt.hpp>
+#include <WCL/DateTime.hpp>
 
 /******************************************************************************
 ** Method:		Default constructor.

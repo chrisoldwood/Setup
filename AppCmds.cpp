@@ -8,7 +8,9 @@
 *******************************************************************************
 */
 
-#include "AppHeaders.hpp"
+#include "Common.hpp"
+#include "AppCmds.hpp"
+#include "SetupApp.hpp"
 #include "AboutDlg.hpp"
 
 /******************************************************************************

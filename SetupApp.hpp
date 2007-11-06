@@ -12,6 +12,15 @@
 #ifndef SETUPAPP_HPP
 #define SETUPAPP_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include <WCL/App.hpp>
+#include "AppWnd.hpp"
+#include "AppCmds.hpp"
+#include <WCL/IniFile.hpp>
+
 /******************************************************************************
 ** 
 ** The application class.

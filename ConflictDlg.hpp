@@ -12,6 +12,12 @@
 #ifndef CONFLICTDLG_HPP
 #define CONFLICTDLG_HPP
 
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+#include <WCL/CommonUI.hpp>
+
 /******************************************************************************
 ** 
 ** .
