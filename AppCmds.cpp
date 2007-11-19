@@ -30,9 +30,9 @@ CAppCmds::CAppCmds()
 	// Define the command table.
 	DEFINE_CMD_TABLE
 		// File menu.
-		CMD_ENTRY(ID_FILE_EXIT,			OnFileExit,			NULL,				-1)
+		CMD_ENTRY(ID_FILE_EXIT,		&CAppCmds::OnFileExit,		NULL,	-1)
 		// Help menu.
-		CMD_ENTRY(ID_HELP_ABOUT,		OnHelpAbout,		NULL,				10)
+		CMD_ENTRY(ID_HELP_ABOUT,	&CAppCmds::OnHelpAbout,		NULL,	10)
 	END_CMD_TABLE
 }
 
