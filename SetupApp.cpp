@@ -28,10 +28,10 @@ CSetupApp App;
 *******************************************************************************
 */
 
-const char* FILE_VER_10  = "1.0";
-const char* FILE_VER_11  = "1.1";
-const char* FILE_VER_12  = "1.2";
-const char* CUR_FILE_VER = FILE_VER_12;
+const tchar* FILE_VER_10  = TXT("1.0");
+const tchar* FILE_VER_11  = TXT("1.1");
+const tchar* FILE_VER_12  = TXT("1.2");
+const tchar* CUR_FILE_VER = FILE_VER_12;
 
 /******************************************************************************
 **
@@ -41,9 +41,9 @@ const char* CUR_FILE_VER = FILE_VER_12;
 */
 
 #ifdef _DEBUG
-const char* CSetupApp::VERSION      = "v1.2 [Debug]";
+const tchar* CSetupApp::VERSION = TXT("v1.2 [Debug]");
 #else
-const char* CSetupApp::VERSION      = "v1.2";
+const tchar* CSetupApp::VERSION = TXT("v1.2");
 #endif
 
 /******************************************************************************
@@ -97,7 +97,7 @@ CSetupApp::~CSetupApp()
 bool CSetupApp::OnOpen()
 {
 	// Set the initial app title.
-	m_strTitle = "Setup";
+	m_strTitle = TXT("Setup");
 
 	OSVERSIONINFO oInfo = { 0 };
 
@@ -110,13 +110,13 @@ bool CSetupApp::OnOpen()
 	m_bWinNT = (oInfo.dwPlatformId == VER_PLATFORM_WIN32_NT);
 
 	// Read the .ini file version.
-	CString strVer = m_oIniFile.ReadString("Version", "Version", "");
+	CString strVer = m_oIniFile.ReadString(TXT("Version"), TXT("Version"), TXT(""));
 
 	// .ini file missing?
-	if (strVer == "")
+	if (strVer == TXT(""))
 	{
-		const char* pszMsg = "The Setup script file is missing or corrupt:-\n\n"
-							 "Script: %s";
+		const tchar* pszMsg = TXT("The Setup script file is missing or corrupt:-\n\n")
+							  TXT("Script: %s");
 
 		FatalMsg(pszMsg, m_oIniFile.m_strPath);
 		return false;
@@ -125,35 +125,35 @@ bool CSetupApp::OnOpen()
 	// Different .ini file version?
 	if (strVer != CUR_FILE_VER)
 	{
-		const char* pszMsg = "The Setup script is for a different version of this installer:-\n\n"
-							 "Found:      '%s'\n"
-							 "Expected: '%s'\n\n"
-							 "Script: %s";
+		const tchar* pszMsg = TXT("The Setup script is for a different version of this installer:-\n\n")
+							  TXT("Found:      '%s'\n")
+							  TXT("Expected: '%s'\n\n")
+							  TXT("Script: %s");
 
 		FatalMsg(pszMsg, strVer, CUR_FILE_VER, m_oIniFile.m_strPath);
 		return false;
 	}
 
 	// Get title, product and author names.
-	m_strTitle   = m_oIniFile.ReadString("Main", "Title",   "");
-	m_strProduct = m_oIniFile.ReadString("Main", "Product", "");
-	m_strAuthor  = m_oIniFile.ReadString("Main", "Author",  "");
+	m_strTitle   = m_oIniFile.ReadString(TXT("Main"), TXT("Title"),   TXT(""));
+	m_strProduct = m_oIniFile.ReadString(TXT("Main"), TXT("Product"), TXT(""));
+	m_strAuthor  = m_oIniFile.ReadString(TXT("Main"), TXT("Author"),  TXT(""));
 
-	if (m_strTitle == "")
+	if (m_strTitle == TXT(""))
 	{
-		const char* pszMsg = "The Setup script file is missing the window title:-\n\n"
-							 "Entry: [Main] Title=\n"
-							 "Script: %s\n";
+		const tchar* pszMsg = TXT("The Setup script file is missing the window title:-\n\n")
+							  TXT("Entry: [Main] Title=\n")
+							  TXT("Script: %s\n");
 
 		FatalMsg(pszMsg, m_oIniFile.m_strPath);
 		return false;
 	}
 
-	if (m_strProduct == "")
+	if (m_strProduct == TXT(""))
 	{
-		const char* pszMsg = "The Setup script file is missing the product name:-\n\n"
-							 "Entry: [Main] Title=\n"
-							 "Script: %s\n";
+		const tchar* pszMsg = TXT("The Setup script file is missing the product name:-\n\n")
+							  TXT("Entry: [Main] Title=\n")
+							  TXT("Script: %s\n");
 
 		FatalMsg(pszMsg, m_oIniFile.m_strPath);
 		return false;

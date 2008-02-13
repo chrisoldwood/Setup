@@ -50,7 +50,7 @@ public:
 	//
 	// Constants.
 	//
-	static const char* VERSION;
+	static const tchar* VERSION;
 
 protected:
 	//

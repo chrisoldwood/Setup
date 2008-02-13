@@ -75,13 +75,13 @@ CAppDlg::CAppDlg()
 void CAppDlg::OnInitDialog()
 {
 	// Get the default installation settings.
-	CPath   strRootDir = App.m_oIniFile.ReadString("Main", "DefRoot",   "%ProgramFiles%");
-	CPath   strAppDir  = App.m_oIniFile.ReadString("Main", "DefFolder", ""   );
-	bool    bProgIcon  = App.m_oIniFile.ReadBool  ("Main", "ProgIcon",  false);
-	bool    bAllUsers  = App.m_oIniFile.ReadBool  ("Main", "AllUsers",  false);
-	CString strProgGrp = App.m_oIniFile.ReadString("Main", "ProgGroup", ""   );
-	bool    bNewGroup  = App.m_oIniFile.ReadBool  ("Main", "NewGroup",  true );
-	bool    bDeskIcon  = App.m_oIniFile.ReadBool  ("Main", "DeskIcon",  false);
+	CPath   strRootDir = App.m_oIniFile.ReadString(TXT("Main"), TXT("DefRoot"),   TXT("%ProgramFiles%"));
+	CPath   strAppDir  = App.m_oIniFile.ReadString(TXT("Main"), TXT("DefFolder"), TXT(""));
+	bool    bProgIcon  = App.m_oIniFile.ReadBool  (TXT("Main"), TXT("ProgIcon"),  false);
+	bool    bAllUsers  = App.m_oIniFile.ReadBool  (TXT("Main"), TXT("AllUsers"),  false);
+	CString strProgGrp = App.m_oIniFile.ReadString(TXT("Main"), TXT("ProgGroup"), TXT(""));
+	bool    bNewGroup  = App.m_oIniFile.ReadBool  (TXT("Main"), TXT("NewGroup"),  true );
+	bool    bDeskIcon  = App.m_oIniFile.ReadBool  (TXT("Main"), TXT("DeskIcon"),  false);
 
 	// Is always "All Users" on 9x.
 	if (!App.m_bWinNT)
@@ -122,7 +122,7 @@ void CAppDlg::OnBrowse()
 {
 	CPath strPath = m_ebAppFolder.Text();
 
-	if (strPath.SelectDir(App.m_AppWnd, "Select Installation Folder", strPath))
+	if (strPath.SelectDir(App.m_AppWnd, TXT("Select Installation Folder"), strPath))
 		m_ebAppFolder.Text(strPath);
 }
 
@@ -186,15 +186,15 @@ void CAppDlg::OnAllUsers()
 	CFileTree   oFileTree;
 
 	// Find all Start menu folders...
-	oFinder.Find(strStartDir, "*.*", false, oFileTree);
+	oFinder.Find(strStartDir, TXT("*.*"), false, oFileTree);
 
 	// Initialise Start Menu folders combo.
-	for (int i = 0; i < oFileTree.Root()->m_oData.m_astrDirs.Size(); ++i)
+	for (size_t i = 0; i < oFileTree.Root()->m_oData.m_astrDirs.Size(); ++i)
 	{
 		CPath strDir = oFileTree.Root()->m_oData.m_astrDirs[i];
 
 		// Ignore "this" and "parent" folders.
-		if ( (strDir == ".") || (strDir == "..") )
+		if ( (strDir == TXT(".")) || (strDir == TXT("..")) )
 			continue;
 
 		m_cbOldGroup.Add(strDir);
@@ -202,11 +202,11 @@ void CAppDlg::OnAllUsers()
 
 	// Select 1st item by default.
 	if (m_cbOldGroup.Count() > 0)
-		m_cbOldGroup.CurSel(0);
+		m_cbOldGroup.CurSel(0U);
 
 	// Warn user about required privilages.
 	if (bAllUsers && App.m_bWinNT)
-		NotifyMsg("Please ensure you have Administrator rights before installing for all users.");
+		NotifyMsg(TXT("Please ensure you have Administrator rights before installing for all users."));
 }
 
 /******************************************************************************
@@ -289,8 +289,8 @@ void CAppDlg::OnInstall()
 	CProgressDlg Dlg;
 
 	Dlg.RunModeless(App.m_AppWnd);
-	Dlg.Title("Installing");
-	Dlg.UpdateLabel("Copying files...");
+	Dlg.Title(TXT("Installing"));
+	Dlg.UpdateLabel(TXT("Copying files..."));
 	App.m_AppWnd.Enable(false);
 
 	try
@@ -311,16 +311,16 @@ void CAppDlg::OnInstall()
 		CStrStrMap oDescMap;
 
 		// Load the file list.
-		if (LoadList("File", astrFileList) > 0)
+		if (LoadList(TXT("File"), astrFileList) > 0)
 		{
 			// Parse file list entries.
-			for (int i = 0; i < astrFileList.Size(); ++i)
+			for (size_t i = 0; i < astrFileList.Size(); ++i)
 			{
 				CStrArray astrFields;
 				CString   strFile, strFolder, strName, strDesc;
 
 				// Split into File + Folder + Name + Description.
-				int nFields = CStrTok::Split(astrFileList[i], ',', astrFields);
+				int nFields = CStrTok::Split(astrFileList[i], TXT(','), astrFields);
 
 				if (nFields >= 1)	strFile   = astrFields[0];
 				if (nFields >= 2)	strFolder = astrFields[1];
@@ -335,16 +335,16 @@ void CAppDlg::OnInstall()
 			}
 
 			// Verify the file list.
-			for (int i = 0; i < astrFiles.Size(); ++i)
+			for (size_t i = 0; i < astrFiles.Size(); ++i)
 			{
 				CString strFileName = astrFiles[i];
 				CPath   strFilePath = CPath(strSetupDir, strFileName);
 
-				if (strFileName == "")
-					throw CString::Fmt("Failed to verify the File List.\nFile entry [%d] is empty", i);
+				if (strFileName == TXT(""))
+					throw CString::Fmt(TXT("Failed to verify the File List.\nFile entry [%d] is empty"), i);
 
 				if (!strFilePath.Exists())
-					throw CString::Fmt("Failed to verify the File List.\nThe following file is missing:-\n\n%s", strFilePath);
+					throw CString::Fmt(TXT("Failed to verify the File List.\nThe following file is missing:-\n\n%s"), strFilePath);
 			}
 		}
 
@@ -353,25 +353,25 @@ void CAppDlg::OnInstall()
 		{
 			if (!CFile::CreateFolder(strInstallDir, true))
 			{
-				strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strInstallDir, CStrCvt::FormatError());
+				strErr.Format(TXT("Failed to create folder:-\n\n%s\n\n%s"), strInstallDir, CStrCvt::FormatError());
 
 				throw strErr;
 			}
 		}
 
 		// Initialise progress bar.
-		Dlg.UpdateLabel("Copying files...");
+		Dlg.UpdateLabel(TXT("Copying files..."));
 		Dlg.InitMeter(astrFiles.Size());
 
 		// Copy the files to the installation folder...
-		for (int i = 0; i < astrFiles.Size(); ++i)
+		for (size_t i = 0; i < astrFiles.Size(); ++i)
 		{
 			CString strFile    = astrFiles[i];
 			CString strFolder  = oFolderMap.Find(strFile); 
 			CPath   strSrcFile = CPath(strSetupDir, strFile);
 			CPath   strDstFile = CPath(strFolder,   strFile);
 
-			Dlg.UpdateLabelAndMeter("Copying file: " + (CString)strFile, i);
+			Dlg.UpdateLabelAndMeter(TXT("Copying file: ") + (CString)strFile, i);
 
 			CopyFile(strSrcFile, strDstFile);
 		}
@@ -396,7 +396,7 @@ void CAppDlg::OnInstall()
 			{
 				if (!CFile::CreateFolder(strIconsDir, true))
 				{
-					strErr.Format("Failed to create folder:-\n\n%s\n\n%s", strIconsDir, CStrCvt::FormatError());
+					strErr.Format(TXT("Failed to create folder:-\n\n%s\n\n%s"), strIconsDir, CStrCvt::FormatError());
 
 					throw strErr;
 				}
@@ -405,10 +405,10 @@ void CAppDlg::OnInstall()
 			CStrArray astrShortcuts;
 
 			// Load the Shortcut list.
-			if (LoadList("Shortcut", astrShortcuts) > 0)
+			if (LoadList(TXT("Shortcut"), astrShortcuts) > 0)
 			{
 				// Create all Shortcuts.
-				for (int i = 0; i < astrShortcuts.Size(); ++i)
+				for (size_t i = 0; i < astrShortcuts.Size(); ++i)
 				{
 					CPath   strFile = astrShortcuts[i];
 					CString strName = strFile.FileTitle();
@@ -419,7 +419,7 @@ void CAppDlg::OnInstall()
 					oDescMap.Find(strFile, strDesc);
 
 					// Append shortcut extension.
-					strName += ".lnk";
+					strName += TXT(".lnk");
 
 					CPath strLink   = CPath(strIconsDir,   strName);
 					CPath strTarget = CPath(strInstallDir, strFile);
@@ -427,7 +427,7 @@ void CAppDlg::OnInstall()
 					// Create it...
 					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
-						strErr.Format("Failed to create Programs shortcut:-\n\n%s\n\n%s", strLink, CStrCvt::FormatError());
+						strErr.Format(TXT("Failed to create Programs shortcut:-\n\n%s\n\n%s"), strLink, CStrCvt::FormatError());
 
 						throw strErr;
 					}
@@ -443,7 +443,7 @@ void CAppDlg::OnInstall()
 
 			if (!strDesktop.Exists())
 			{
-				strErr = "Failed to locate the Shell Desktop folder.";
+				strErr = TXT("Failed to locate the Shell Desktop folder.");
 
 				throw strErr;
 			}
@@ -451,10 +451,10 @@ void CAppDlg::OnInstall()
 			CStrArray astrDeskIcons;
 
 			// Load the DeskIcons list.
-			if (LoadList("DeskIcon", astrDeskIcons) > 0)
+			if (LoadList(TXT("DeskIcon"), astrDeskIcons) > 0)
 			{
 				// Create all Desktop icons.
-				for (int i = 0; i < astrDeskIcons.Size(); ++i)
+				for (size_t i = 0; i < astrDeskIcons.Size(); ++i)
 				{
 					CPath   strFile = astrDeskIcons[i];
 					CString strName = strFile.FileTitle();
@@ -465,7 +465,7 @@ void CAppDlg::OnInstall()
 					oDescMap.Find(strFile, strDesc);
 
 					// Append shortcut extension.
-					strName += ".lnk";
+					strName += TXT(".lnk");
 
 					CPath strLink   = CPath(strDesktop,    strName);
 					CPath strTarget = CPath(strInstallDir, strFile);
@@ -473,7 +473,7 @@ void CAppDlg::OnInstall()
 					// Create it...
 					if (!CFile::CreateShortcut(strLink, strTarget, strDesc))
 					{
-						strErr.Format("Failed to create Desktop shortcut:-\n\n%s\n\n%s", strLink, CStrCvt::FormatError());
+						strErr.Format(TXT("Failed to create Desktop shortcut:-\n\n%s\n\n%s"), strLink, CStrCvt::FormatError());
 
 						throw strErr;
 					}
@@ -485,7 +485,7 @@ void CAppDlg::OnInstall()
 		App.m_AppWnd.Enable(true);
 		Dlg.Destroy();
 
-		NotifyMsg("%s installed successfully.", App.m_strProduct);
+		NotifyMsg(TXT("%s installed successfully."), App.m_strProduct);
 	}
 	catch (const CString& e)
 	{
@@ -493,7 +493,7 @@ void CAppDlg::OnInstall()
 		App.m_AppWnd.Enable(true);
 		Dlg.Destroy();
 
-		FatalMsg(e);
+		FatalMsg(TXT("%s"), e);
 	}
 
 	// Close the app.
@@ -517,22 +517,22 @@ void CAppDlg::OnInstall()
 *******************************************************************************
 */
 
-int CAppDlg::LoadList(const char* pszItem, CStrArray& astrList)
+int CAppDlg::LoadList(const tchar* pszItem, CStrArray& astrList)
 {
 	CString strSection, strEntry;
 
 	// Format the section name [Items].
-	strSection.Format("%ss", pszItem);
+	strSection.Format(TXT("%ss"), pszItem);
 
 	// Read the list size.
-	int nItems = App.m_oIniFile.ReadInt(strSection, "Count", 0);
+	int nItems = App.m_oIniFile.ReadInt(strSection, TXT("Count"), 0);
 
 	// Read the list.
 	for (int i = 0; i < nItems; ++i)
 	{
-		strEntry.Format("%s[%d]", pszItem, i);
+		strEntry.Format(TXT("%s[%d]"), pszItem, i);
 
-		astrList.Add(App.m_oIniFile.ReadString(strSection, strEntry, ""));
+		astrList.Add(App.m_oIniFile.ReadString(strSection, strEntry, TXT("")));
 	}
 
 	return astrList.Size();
@@ -574,7 +574,7 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 		// Get source file properties.
 		if (!CFile::QueryInfo(strSrcFile, oSrcInfo))
 		{
-			strErr.Format("Failed to query file properties:\n\n%s", strSrcFile);
+			strErr.Format(TXT("Failed to query file properties:\n\n%s"), strSrcFile);
 
 			throw strErr;
 		}
@@ -582,7 +582,7 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 		// Get destination file properties.
 		if (!CFile::QueryInfo(strDstFile, oDstInfo))
 		{
-			strErr.Format("Failed to query file properties:\n\n%s", strDstFile);
+			strErr.Format(TXT("Failed to query file properties:\n\n%s"), strDstFile);
 
 			throw strErr;
 		}
@@ -599,10 +599,10 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 			CDateTime    dtDstModTime = CDateTime::FromLocalTime(oDstInfo.st_mtime);
 			CDateTime    dtSrcModTime = CDateTime::FromLocalTime(oSrcInfo.st_mtime);
 
-			oQueryDlg.m_strFileName1.Format("%s", strDstFile);
-			oQueryDlg.m_strFileInfo1.Format("%s - %u Bytes", dtDstModTime.ToString(), oDstInfo.st_size);
-			oQueryDlg.m_strFileName2.Format("%s", strSrcFile);
-			oQueryDlg.m_strFileInfo2.Format("%s - %u Bytes", dtSrcModTime.ToString(), oSrcInfo.st_size);
+			oQueryDlg.m_strFileName1.Format(TXT("%s"), strDstFile);
+			oQueryDlg.m_strFileInfo1.Format(TXT("%s - %u Bytes"), dtDstModTime.ToString(), oDstInfo.st_size);
+			oQueryDlg.m_strFileName2.Format(TXT("%s"), strSrcFile);
+			oQueryDlg.m_strFileInfo2.Format(TXT("%s - %u Bytes"), dtSrcModTime.ToString(), oSrcInfo.st_size);
 
 			// Query user for action.
 			int nResult = oQueryDlg.RunModal(App.m_AppWnd);
@@ -618,7 +618,7 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 			// Abort install?
 			if (nResult == IDCANCEL)
 			{
-				strErr = "Installation aborted";
+				strErr = TXT("Installation aborted");
 
 				throw strErr;
 			}
@@ -628,7 +628,7 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 	// Copy file.
 	if (!CFile::Copy(strSrcFile, strDstFile, true))
 	{
-		strErr.Format("Failed to copy file:\n\n%s to\n%s\n\n%s", strSrcFile, strDstFile, CStrCvt::FormatError());
+		strErr.Format(TXT("Failed to copy file:\n\n%s to\n%s\n\n%s"), strSrcFile, strDstFile, CStrCvt::FormatError());
 
 		throw strErr;
 	}
@@ -651,16 +651,16 @@ void CAppDlg::CopyFile(const CPath& strSrcFile, const CPath& strDstFile)
 CPath CAppDlg::ParseFolder(const CPath& strFolder, const CPath& strTargetDir)
 {
 	// %TargetDir% is the default.
-	if (strFolder == "")
+	if (strFolder == TXT(""))
 		return strTargetDir;
 
 	CPath str = strFolder;
 
 	// Do a crude search and replace on all possible matches.
-	if (str.Find('%') != -1)
-		str.Replace("%TargetDir%", strTargetDir);
+	if (str.Find(TXT('%')) != -1)
+		str.Replace(TXT("%TargetDir%"), strTargetDir);
 
-	if (str.Find('%') != -1)
+	if (str.Find(TXT('%')) != -1)
 		str.ExpandVars();
 
 	return str;
