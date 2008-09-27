@@ -38,12 +38,6 @@ public:
 	// Commands.
 	//
 
-	// File menu.
-	void OnFileExit();
-
-	// Help menu.
-	void OnHelpAbout();
-
 	//
 	// UI handlers.
 	//
