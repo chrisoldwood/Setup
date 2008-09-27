@@ -47,11 +47,6 @@ public:
 	CString		m_strProduct;	// Product name.
 	CString		m_strAuthor;	// Product author.
 
-	//
-	// Constants.
-	//
-	static const tchar* VERSION;
-
 protected:
 	//
 	// Startup and Shutdown template methods.

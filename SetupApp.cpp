@@ -34,19 +34,6 @@ const tchar* FILE_VER_12  = TXT("1.2");
 const tchar* CUR_FILE_VER = FILE_VER_12;
 
 /******************************************************************************
-**
-** Class constants.
-**
-*******************************************************************************
-*/
-
-#ifdef _DEBUG
-const tchar* CSetupApp::VERSION = TXT("v1.2 [Debug]");
-#else
-const tchar* CSetupApp::VERSION = TXT("v1.2");
-#endif
-
-/******************************************************************************
 ** Method:		Constructor
 **
 ** Description:	Default constructor.
