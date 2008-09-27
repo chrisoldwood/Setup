@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by Setup.rc
 //
 #define IDR_APPICON                     2
@@ -29,6 +29,7 @@
 #define IDC_OLD_GROUP                   1097
 #define IDC_ALL_USERS                   1100
 #define IDC_FILENAME_1                  1101
+#define IDC_COPYRIGHT                   1101
 #define IDC_FILEINFO_1                  1102
 #define IDC_FILENAME_2                  1103
 #define IDC_FILEINFO_2                  1104
@@ -45,7 +46,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         163
-#define _APS_NEXT_CONTROL_VALUE         1101
+#define _APS_NEXT_CONTROL_VALUE         1102
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
