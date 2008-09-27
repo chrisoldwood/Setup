@@ -266,7 +266,7 @@ void CAppDlg::OnClose()
 
 void CAppDlg::OnAbout()
 {
-	CAboutDlg Dlg;
+	AboutDlg Dlg;
 
 	Dlg.RunModal(App.m_AppWnd);
 }
