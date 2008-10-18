@@ -1,12 +1,11 @@
-This Release
-============
-
-
-Next Release
-=============
-
 - Uninstall support.
 
 - Add RegKey for installed path for use when upgrading
 
 - Fix use of SHGetFolderPath() in CPath (~NT 4.0)
+
+- Change folder selection so that it keeps the product folder on the end.
+
+- Check parent install folder exists and warn if not.
+
+- Registering of COM DLLs.
