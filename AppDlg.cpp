@@ -15,12 +15,12 @@
 #include <shlobj.h>
 #include "ProgressDlg.hpp"
 #include "ConflictDlg.hpp"
-#include <Legacy/TMap.hpp>
-#include <Legacy/FileFinder.hpp>
 #include <WCL/StrTok.hpp>
 #include <WCL/File.hpp>
 #include <WCL/StrCvt.hpp>
 #include <WCL/DateTime.hpp>
+#include <WCL/FolderIterator.hpp>
+#include <WCL/StrArray.hpp>
 
 /******************************************************************************
 ** Method:		Default constructor.
@@ -182,23 +182,10 @@ void CAppDlg::OnAllUsers()
 	uint  nFolderID   = (bAllUsers && App.m_bWinNT) ? CSIDL_COMMON_PROGRAMS : CSIDL_PROGRAMS;
 	CPath strStartDir = CPath::SpecialDir(nFolderID);
 
-	CFileFinder oFinder;
-	CFileTree   oFileTree;
+	WCL::FolderIterator end;
 
-	// Find all Start menu folders...
-	oFinder.Find(strStartDir, TXT("*.*"), false, oFileTree);
-
-	// Initialise Start Menu folders combo.
-	for (size_t i = 0; i < oFileTree.Root()->m_oData.m_astrDirs.Size(); ++i)
-	{
-		CPath strDir = oFileTree.Root()->m_oData.m_astrDirs[i];
-
-		// Ignore "this" and "parent" folders.
-		if ( (strDir == TXT(".")) || (strDir == TXT("..")) )
-			continue;
-
-		m_cbOldGroup.Add(strDir);
-	}
+	for (WCL::FolderIterator it(tstring(strStartDir), TXT("*.*"), WCL::FolderIterator::FIND_FOLDERS); it != end; ++it)
+		m_cbOldGroup.Add(*it);
 
 	// Select 1st item by default.
 	if (m_cbOldGroup.Count() > 0)
@@ -206,7 +193,7 @@ void CAppDlg::OnAllUsers()
 
 	// Warn user about required privilages.
 	if (bAllUsers && App.m_bWinNT)
-		NotifyMsg(TXT("Please ensure you have Administrator rights before installing for all users."));
+		AlertMsg(TXT("Please ensure you have Administrative rights\nbefore attempting an installation for all users."));
 }
 
 /******************************************************************************
@@ -296,7 +283,7 @@ void CAppDlg::OnInstall()
 	try
 	{
 		// Template shorthands.
-		typedef TMap<CString, CString> CStrStrMap;
+		typedef std::map<CString, CString> CStrStrMap;
 
 		CString strErr;
 
@@ -329,9 +316,9 @@ void CAppDlg::OnInstall()
 
 				// Add to collections.
 				astrFiles.Add(strFile);
-				oFolderMap.Add(strFile, ParseFolder(strFolder, strInstallDir));
-				oNameMap.Add(strFile, strName);
-				oDescMap.Add(strFile, strDesc);
+				oFolderMap.insert(std::make_pair(strFile, ParseFolder(strFolder, strInstallDir)));
+				oNameMap.insert(std::make_pair(strFile, strName));
+				oDescMap.insert(std::make_pair(strFile, strDesc));
 			}
 
 			// Verify the file list.
@@ -367,7 +354,7 @@ void CAppDlg::OnInstall()
 		for (size_t i = 0; i < astrFiles.Size(); ++i)
 		{
 			CString strFile    = astrFiles[i];
-			CString strFolder  = oFolderMap.Find(strFile); 
+			CString strFolder  = oFolderMap.find(strFile)->second; 
 			CPath   strSrcFile = CPath(strSetupDir, strFile);
 			CPath   strDstFile = CPath(strFolder,   strFile);
 
@@ -415,8 +402,15 @@ void CAppDlg::OnInstall()
 					CString strDesc;
 
 					// Get the shortcut name and description, if set.
-					oNameMap.Find(strFile, strName);
-					oDescMap.Find(strFile, strDesc);
+					CStrStrMap::const_iterator nameIter = oNameMap.find(strFile);
+
+					if (nameIter != oNameMap.end())
+						strName = nameIter->second;
+
+					CStrStrMap::const_iterator descIter = oDescMap.find(strFile);
+
+					if (descIter != oDescMap.end())
+						strDesc = descIter->second;
 
 					// Append shortcut extension.
 					strName += TXT(".lnk");
@@ -460,9 +454,16 @@ void CAppDlg::OnInstall()
 					CString strName = strFile.FileTitle();
 					CString strDesc;
 
-					// Get the shortcut name and description.
-					oNameMap.Find(strFile, strName);
-					oDescMap.Find(strFile, strDesc);
+					// Get the shortcut name and description, if set.
+					CStrStrMap::const_iterator nameIter = oNameMap.find(strFile);
+
+					if (nameIter != oNameMap.end())
+						strName = nameIter->second;
+
+					CStrStrMap::const_iterator descIter = oDescMap.find(strFile);
+
+					if (descIter != oDescMap.end())
+						strDesc = descIter->second;
 
 					// Append shortcut extension.
 					strName += TXT(".lnk");
