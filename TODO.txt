@@ -9,3 +9,13 @@
 - Check parent install folder exists and warn if not.
 
 - Registering of COM DLLs.
+
+- Change start menu word "folder" to "group"?
+
+- Allow easier creation of a new group under an existing group, e.g. My Tools\Program.
+
+- Option to verify the file list (useful when packaging).
+
+- Fix desktop icon creation for All Users as it puts it on the installing users desktop.
+
+- Don't exit on error.
