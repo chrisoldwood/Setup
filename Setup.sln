@@ -1,8 +1,4 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MkSetup", "..\MkSetup\MkSetup.vcproj", "{9F324A70-2F25-433C-BCE6-865A91F74328}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Setup", "Setup.vcproj", "{E7E3A261-54BD-4117-8B0E-154828DD2F0D}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -20,24 +16,20 @@ Global
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
-		SccLocalPath0 = .
+		SccNumberOfProjects = 4
+		SccProjectUniqueName0 = ..\\Lib\\Core\\Core.vcproj
+		SccProjectName0 = \u0022$/Win32/Lib/Core\u0022,\u0020QWDAAAAA
+		SccLocalPath0 = ..\\Lib\\Core
 		CanCheckoutShared = true
-		SolutionUniqueID = {A08EBD16-4162-4463-B899-54AF5D87B6B7}
-		SccProjectUniqueName1 = ..\\MkSetup\\MkSetup.vcproj
-		SccProjectName1 = \u0022$/Win32/MkSetup\u0022,\u0020YLDAAAAA
-		SccLocalPath1 = ..\\MkSetup
+		SccProjectUniqueName1 = ..\\Lib\\WCL\\Wcl.vcproj
+		SccProjectName1 = \u0022$/Win32/Lib/WCL\u0022,\u0020HPAAAAAA
+		SccLocalPath1 = ..\\Lib\\WCL
 		CanCheckoutShared = true
-		SccProjectUniqueName2 = Setup.vcproj
 		SccLocalPath2 = .
 		CanCheckoutShared = true
-		SccProjectUniqueName3 = ..\\Lib\\Core\\Core.vcproj
-		SccProjectName3 = \u0022$/Win32/Lib/Core\u0022,\u0020QWDAAAAA
-		SccLocalPath3 = ..\\Lib\\Core
-		CanCheckoutShared = true
-		SccProjectUniqueName4 = ..\\Lib\\WCL\\Wcl.vcproj
-		SccProjectName4 = \u0022$/Win32/Lib/WCL\u0022,\u0020HPAAAAAA
-		SccLocalPath4 = ..\\Lib\\WCL
+		SolutionUniqueID = {696009A2-E86F-4364-87C1-045F1573ECBD}
+		SccProjectUniqueName3 = Setup.vcproj
+		SccLocalPath3 = .
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -47,10 +39,6 @@ Global
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{9F324A70-2F25-433C-BCE6-865A91F74328}.Debug.ActiveCfg = Debug|Win32
-		{9F324A70-2F25-433C-BCE6-865A91F74328}.Debug.Build.0 = Debug|Win32
-		{9F324A70-2F25-433C-BCE6-865A91F74328}.Release.ActiveCfg = Release|Win32
-		{9F324A70-2F25-433C-BCE6-865A91F74328}.Release.Build.0 = Release|Win32
 		{E7E3A261-54BD-4117-8B0E-154828DD2F0D}.Debug.ActiveCfg = Debug|Win32
 		{E7E3A261-54BD-4117-8B0E-154828DD2F0D}.Debug.Build.0 = Debug|Win32
 		{E7E3A261-54BD-4117-8B0E-154828DD2F0D}.Release.ActiveCfg = Release|Win32
