@@ -175,6 +175,8 @@ void CAppDlg::OnProgIcon()
 
 void CAppDlg::OnAllUsers()
 {
+	const size_t first = 0;
+
 	m_cbOldGroup.Reset();
 
 	// Get the start menu folder.
@@ -189,7 +191,7 @@ void CAppDlg::OnAllUsers()
 
 	// Select 1st item by default.
 	if (m_cbOldGroup.Count() > 0)
-		m_cbOldGroup.CurSel(0U);
+		m_cbOldGroup.CurSel(first);
 
 	// Warn user about required privilages.
 	if (bAllUsers && App.m_bWinNT)
@@ -307,7 +309,7 @@ void CAppDlg::OnInstall()
 				CString   strFile, strFolder, strName, strDesc;
 
 				// Split into File + Folder + Name + Description.
-				int nFields = CStrTok::Split(astrFileList[i], TXT(','), astrFields);
+				size_t nFields = CStrTok::Split(astrFileList[i], TXT(','), astrFields);
 
 				if (nFields >= 1)	strFile   = astrFields[0];
 				if (nFields >= 2)	strFolder = astrFields[1];
@@ -348,7 +350,7 @@ void CAppDlg::OnInstall()
 
 		// Initialise progress bar.
 		Dlg.UpdateLabel(TXT("Copying files..."));
-		Dlg.InitMeter(astrFiles.Size());
+		Dlg.InitMeter(static_cast<uint>(astrFiles.Size()));
 
 		// Copy the files to the installation folder...
 		for (size_t i = 0; i < astrFiles.Size(); ++i)
@@ -358,7 +360,7 @@ void CAppDlg::OnInstall()
 			CPath   strSrcFile = CPath(strSetupDir, strFile);
 			CPath   strDstFile = CPath(strFolder,   strFile);
 
-			Dlg.UpdateLabelAndMeter(TXT("Copying file: ") + (CString)strFile, i);
+			Dlg.UpdateLabelAndMeter(TXT("Copying file: ") + (CString)strFile, static_cast<uint>(i));
 
 			CopyFile(strSrcFile, strDstFile);
 		}
@@ -518,7 +520,7 @@ void CAppDlg::OnInstall()
 *******************************************************************************
 */
 
-int CAppDlg::LoadList(const tchar* pszItem, CStrArray& astrList)
+size_t CAppDlg::LoadList(const tchar* pszItem, CStrArray& astrList)
 {
 	CString strSection, strEntry;
 
@@ -526,10 +528,10 @@ int CAppDlg::LoadList(const tchar* pszItem, CStrArray& astrList)
 	strSection.Format(TXT("%ss"), pszItem);
 
 	// Read the list size.
-	int nItems = App.m_oIniFile.ReadInt(strSection, TXT("Count"), 0);
+	size_t nItems = App.m_oIniFile.ReadInt(strSection, TXT("Count"), 0);
 
 	// Read the list.
-	for (int i = 0; i < nItems; ++i)
+	for (size_t i = 0; i < nItems; ++i)
 	{
 		strEntry.Format(TXT("%s[%d]"), pszItem, i);
 

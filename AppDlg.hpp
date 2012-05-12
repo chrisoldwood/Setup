@@ -67,7 +67,7 @@ protected:
 	//
 	// Internal methods.
 	//
-	int  LoadList(const tchar* pszItem, CStrArray& astrList);
+	size_t LoadList(const tchar* pszItem, CStrArray& astrList);
 	void CopyFile(const CPath& strSrcFile, const CPath& strDstFile);
 	CPath ParseFolder(const CPath& strFolder, const CPath& strTargetDir);
 };
