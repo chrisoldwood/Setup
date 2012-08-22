@@ -18,7 +18,7 @@
 
 #include <WCL/App.hpp>
 #include "AppWnd.hpp"
-#include "AppCmds.hpp"
+#include <WCL/NullCmdController.hpp>
 #include <WCL/IniFile.hpp>
 
 /******************************************************************************
@@ -41,7 +41,7 @@ public:
 	// Members
 	//
 	CAppWnd		m_AppWnd;		// Main window.
-	CAppCmds	m_AppCmds;		// Command handler.
+	WCL::NullCmdController	m_AppCmds;		//!< Command handler.
 	CIniFile	m_oIniFile;		// Config File.
 	bool		m_bWinNT;		// Is Windows NT line?
 	CString		m_strProduct;	// Product name.

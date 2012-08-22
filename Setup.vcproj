@@ -139,9 +139,6 @@
 				RelativePath="AboutDlg.cpp">
 			</File>
 			<File
-				RelativePath="AppCmds.cpp">
-			</File>
-			<File
 				RelativePath="AppDlg.cpp">
 			</File>
 			<File
@@ -177,9 +174,6 @@
 			Filter="h;hpp;hxx;hm;inl">
 			<File
 				RelativePath="AboutDlg.hpp">
-			</File>
-			<File
-				RelativePath="AppCmds.hpp">
 			</File>
 			<File
 				RelativePath="AppDlg.hpp">

@@ -47,6 +47,8 @@ const tchar* CUR_FILE_VER = FILE_VER_12;
 
 CSetupApp::CSetupApp()
 	: CApp(m_AppWnd, m_AppCmds)
+	, m_AppWnd()
+	, m_AppCmds()
 	, m_bWinNT(false)
 {
 
@@ -153,9 +155,6 @@ bool CSetupApp::OnOpen()
 	// Show it.
 	m_AppWnd.Centre();
 	m_AppWnd.Show(m_iCmdShow);
-
-	// Update UI.
-	m_AppCmds.UpdateUI();
 
 	return true;
 }
